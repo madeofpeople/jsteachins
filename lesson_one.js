@@ -16,6 +16,20 @@
   Person.prototype.walk = function(){
     console.log( "I'm", this.firstName,"and I'm walking from here to there!" );
   }
+  Person.prototype.setView = function(){
+    this.view = el;
+    /*
+    for example here, we can assign the click event listener to our view, that calls our greet method.
+    greet would still have access to all our properties using the "this" keyword.
+    include the value this.view
+    */
+    console.log( el );
+    var me = this;
+    this.view.addEventListener("click", function( event ){
+      console.log( "Event object", event );
+      me.greet();
+    }, false );
+  }
 
   // constructor
   function Radical( firstName, lastName, age, gender ){
@@ -57,15 +71,16 @@
     */
     this.view = el;
     /*
-    for example here, we can assign the click event listener to our view, that calls our greet method.
-    greet would still have access to all our properties using the "this" keyword.
-    include the value this.view
+    Radicals do it differently, it will only work in certain browsers,
+    but hey I'm a radical!
     */
-    console.log( el );
-    var me = this;
-    this.view.addEventListener("click", function(){
-      me.greet();
-    }, false );
+    this.view.addEventListener("click", this.onClick.bind(this), false );
+    // although with a little extra work support can be added:
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
+  }
+
+  Radical.prototype.onClick = function( e ){
+    this.greet();
   }
 
   // we create a person
